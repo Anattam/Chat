@@ -19,6 +19,7 @@
     "git": "^0.1.5",
     "jade": "^1.11.0",
     "mongodb": "^6.7.0",
+    "mongoose": "^8.4.3",
     "multer": "^1.4.5-lts.1",
     "socket.io": "^4.7.5",
     "stream-chat": "^8.36.0"
