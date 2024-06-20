@@ -3,14 +3,13 @@ const http = require("http");
 const socketIo = require("socket.io");
 const mongoose = require("mongoose");
 
-// Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/chat", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 // Define the message schema and model
-const messageSchema = new mongoose.Schema({
+const msg = new mongoose.Schema({
   username: String,
   message: String,
   timestamp: {
@@ -19,7 +18,7 @@ const messageSchema = new mongoose.Schema({
   },
 });
 
-const Message = mongoose.model("Message", messageSchema);
+const Message = mongoose.model("Message", msg);
 
 const app = express();
 const server = http.createServer(app);
