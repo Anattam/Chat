@@ -12,26 +12,18 @@
         list-style-type: none;
         margin: 25px 50px 50px;
       }
-      li {
-        width: 25%;
-        padding: 8px 25px;
-        background: #0000ff;
-        color: #fff;
-        margin-bottom: 10px;
-        font-size: 21px;
-        font-family: arial;
-        border-radius: 20px;
-      }
-      button {
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
       .message-box {
         display: flex;
         color: white;
         margin: 25px 50px 50px;
+      }
+      .username {
+        color: orange;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .message {
+        color: white;
       }
     </style>
     <script>
@@ -79,11 +71,11 @@
             <g>
               <path
                 d="M483.927,212.664L66.967,25.834C30.95,9.695-7.905,42.023,1.398,80.368l21.593,89.001
-                        c3.063,12.622,11.283,23.562,22.554,30.014l83.685,47.915c6.723,3.85,6.738,13.546,0,17.405l-83.684,47.915
-                        c-11.271,6.452-19.491,17.393-22.554,30.015l-21.594,89c-9.283,38.257,29.506,70.691,65.569,54.534l416.961-186.83
-                        C521.383,282.554,521.333,229.424,483.927,212.664z M359.268,273.093l-147.519,66.1c-9.44,4.228-20.521,0.009-24.752-9.435
-                        c-4.231-9.44-0.006-20.523,9.434-24.752l109.37-49.006l-109.37-49.006c-9.44-4.231-13.665-15.313-9.434-24.752
-                        c4.229-9.44,15.309-13.666,24.752-9.435l147.519,66.101C373.996,245.505,374.007,266.49,359.268,273.093z"
+			c3.063,12.622,11.283,23.562,22.554,30.014l83.685,47.915c6.723,3.85,6.738,13.546,0,17.405l-83.684,47.915
+			c-11.271,6.452-19.491,17.393-22.554,30.015l-21.594,89c-9.283,38.257,29.506,70.691,65.569,54.534l416.961-186.83
+			C521.383,282.554,521.333,229.424,483.927,212.664z M359.268,273.093l-147.519,66.1c-9.44,4.228-20.521,0.009-24.752-9.435
+			c-4.231-9.44-0.006-20.523,9.434-24.752l109.37-49.006l-109.37-49.006c-9.44-4.231-13.665-15.313-9.434-24.752
+			c4.229-9.44,15.309-13.666,24.752-9.435l147.519,66.101C373.996,245.505,374.007,266.49,359.268,273.093z"
               />
             </g>
           </g>
@@ -129,7 +121,24 @@
       function addMessage(msg) {
         const messages = document.getElementById("messages");
         const item = document.createElement("li");
-        item.textContent = `${msg.username}: ${msg.message}`;
+        item.classList.add(
+          "mb-4",
+          "p-4",
+          "bg-blue-500",
+          "text-white",
+          "rounded-lg"
+        );
+
+        const usernameBox = document.createElement("div");
+        usernameBox.classList.add("username", "mb-2");
+        usernameBox.textContent = `${msg.username} said:`;
+
+        const messageBox = document.createElement("div");
+        messageBox.classList.add("message");
+        messageBox.textContent = msg.message;
+
+        item.appendChild(usernameBox);
+        item.appendChild(messageBox);
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       }
