@@ -28,7 +28,7 @@
         align-items: center;
         justify-content: center;
       }
-      .box {
+      .message-box {
         display: flex;
         color: white;
         margin: 25px 50px 50px;
@@ -47,20 +47,16 @@
     </script>
   </head>
   <body>
+    <!-- Header -->
     <div class="border-5 border-green-500">
       <h1 class="font-bold text-green-500 text-3xl text-center border">
         Chat App Project
       </h1>
     </div>
+    <!-- Messages displayed here -->
     <ul class="mx-14 my-10" id="messages"></ul>
-    <div id="username" class="rounded-3xl px-3 py-1 w-full m-2">
-      <input
-        id="username"
-        placeholder="Username"
-        class="rounded-3xl px-3 py-1 m-2 opacity-50 text-white bg-black"
-      />
-    </div>
-    <div class="box">
+    <!-- To write and send messages -->
+    <div class="message-box">
       <input
         id="input"
         autocomplete="off"
@@ -68,7 +64,6 @@
         class="rounded-3xl px-3 py-1 w-full m-2 opacity-50 text-white bg-black"
       />
       <button class="rounded-full p-3 bg-[#90EE90]" onclick="sendMessage()">
-        <?xml version="1.0" encoding="iso-8859-1"?>
         <svg
           fill="#000000"
           height="24px"
@@ -84,20 +79,35 @@
             <g>
               <path
                 d="M483.927,212.664L66.967,25.834C30.95,9.695-7.905,42.023,1.398,80.368l21.593,89.001
-                            c3.063,12.622,11.283,23.562,22.554,30.014l83.685,47.915c6.723,3.85,6.738,13.546,0,17.405l-83.684,47.915
-                            c-11.271,6.452-19.491,17.393-22.554,30.015l-21.594,89c-9.283,38.257,29.506,70.691,65.569,54.534l416.961-186.83
-                            C521.383,282.554,521.333,229.424,483.927,212.664z M359.268,273.093l-147.519,66.1c-9.44,4.228-20.521,0.009-24.752-9.435
-                            c-4.231-9.44-0.006-20.523,9.434-24.752l109.37-49.006l-109.37-49.006c-9.44-4.231-13.665-15.313-9.434-24.752
-                            c4.229-9.44,15.309-13.666,24.752-9.435l147.519,66.101C373.996,245.505,374.007,266.49,359.268,273.093z"
+                        c3.063,12.622,11.283,23.562,22.554,30.014l83.685,47.915c6.723,3.85,6.738,13.546,0,17.405l-83.684,47.915
+                        c-11.271,6.452-19.491,17.393-22.554,30.015l-21.594,89c-9.283,38.257,29.506,70.691,65.569,54.534l416.961-186.83
+                        C521.383,282.554,521.333,229.424,483.927,212.664z M359.268,273.093l-147.519,66.1c-9.44,4.228-20.521,0.009-24.752-9.435
+                        c-4.231-9.44-0.006-20.523,9.434-24.752l109.37-49.006l-109.37-49.006c-9.44-4.231-13.665-15.313-9.434-24.752
+                        c4.229-9.44,15.309-13.666,24.752-9.435l147.519,66.101C373.996,245.505,374.007,266.49,359.268,273.093z"
               />
             </g>
           </g>
         </svg>
       </button>
     </div>
+
+    <!-- script -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
+
+      // Function to prompt for username
+      function getUsername() {
+        let username = prompt("Enter your username:");
+        while (!username) {
+          username = prompt(
+            "Username cannot be empty. Please enter your username:"
+          );
+        }
+        return username;
+      }
+
+      const username = getUsername();
 
       socket.on("previousMessages", (messages) => {
         messages.forEach(addMessage);
@@ -108,9 +118,8 @@
       });
 
       function sendMessage() {
-        const username = document.getElementById("username").value;
         const message = document.getElementById("input").value;
-        if (username && message) {
+        if (message) {
           const msg = { username, message };
           socket.emit("chat message", msg);
           document.getElementById("input").value = "";
