@@ -40,8 +40,8 @@
   </head>
   <body>
     <!-- Header -->
-    <div class="border-5 border-green-500">
-      <h1 class="font-bold text-green-500 text-3xl text-center border">
+    <div class="border-5 bg-green-500 border-[#006400]">
+      <h1 class="font-bold text-white text-3xl text-center border">
         Chat App Project
       </h1>
     </div>
@@ -87,27 +87,48 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
+      let username = null;
 
-      // Function to prompt for username
       function getUsername() {
-        let username = prompt("Enter your username:");
-        while (!username) {
-          username = prompt(
+        let name = prompt("Enter your username:");
+        while (!name) {
+          name = prompt(
             "Username cannot be empty. Please enter your username:"
           );
         }
-        return username;
+        return name;
       }
 
-      const username = getUsername();
+      function initChatApp() {
+        username = getUsername();
+        socket.emit("loadPreviousMessages");
+        socket.on("previousMessages", (messages) => {
+          clearMessages();
+          messages.forEach(addMessage);
+        });
+        socket.on("chat message", (msg) => {
+          addMessage(msg);
+        });
+        socket.on("reconnect", () => {
+          socket.emit("loadPreviousMessages");
+        });
 
-      socket.on("previousMessages", (messages) => {
-        messages.forEach(addMessage);
-      });
+        // Add event listener for the "Enter" key on the input field
+        document
+          .getElementById("input")
+          .addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              // Prevent default form submission
+              sendMessage();
+            }
+          });
+      }
 
-      socket.on("chat message", (msg) => {
-        addMessage(msg);
-      });
+      function clearMessages() {
+        const messages = document.getElementById("messages");
+        messages.innerHTML = "";
+      }
 
       function sendMessage() {
         const message = document.getElementById("input").value;
@@ -131,7 +152,7 @@
 
         const usernameBox = document.createElement("div");
         usernameBox.classList.add("username", "mb-2");
-        usernameBox.textContent = `${msg.username} said:`;
+        usernameBox.textContent = `${msg.username}:`;
 
         const messageBox = document.createElement("div");
         messageBox.classList.add("message");
@@ -142,6 +163,10 @@
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        initChatApp();
+      });
     </script>
   </body>
 </html>
